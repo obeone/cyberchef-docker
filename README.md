@@ -10,5 +10,9 @@ docker run -d -p 8000:8000  obebete/cyberchef
 
 And go to (http://localhost:8000)[http://localhost:8000]
 
+## Building
+Customize `build.sh` if you need, and run it!
+
+
 ### Kubernetes (Helm)
 A helm chart exists, just follow [documentation](https://github.com/obeone/charts)
