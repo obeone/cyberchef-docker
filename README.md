@@ -8,7 +8,7 @@ This docker image embbed [GCHQ CyberChef](https://github.com/gchq/CyberChef) in 
 docker run -d -p 8000:8000  obebete/cyberchef
 ```
 
-And go to [http://localhost:8000][http://localhost:8000]
+And go to [http://localhost:8000](http://localhost:8000)
 
 ## Building
 Customize `build.sh` if you need, and run it!
