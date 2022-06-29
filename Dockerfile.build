@@ -1,0 +1,24 @@
+FROM docker.io/node as build
+ARG GIT_TAG=
+
+RUN git clone https://github.com/gchq/CyberChef /srv
+WORKDIR /srv
+
+RUN if [ -e "${GIT_TAG}" ]; then git checkout ${GIT_TAG}; fi
+
+LABEL version="$latestTag"
+# RUN apt-get update
+#RUN apt-get install -y python3 grunt node-findup-sync
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN npm install
+#RUN grunt prod
+RUN npx grunt prod
+
+
+FROM scratch
+
+COPY --from=build /srv/build/prod /
+
+
+
+LABEL maintainer='Grégoire Compagnon <obeone@obeone.org>'
