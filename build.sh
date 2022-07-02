@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+set -ex
 
 # Default values
 app_name=cyberchef
 repository=harbor.obeone.cloud/public/cyberchef
-base_image=${repository}_base
+base_build_tag=base_build
 git_repo=https://api.github.com/repos/gchq/CyberChef/tags
 
 platform="linux/amd64,linux/arm64,linux/i386,linux/armhf,linux/armel"
@@ -52,7 +53,7 @@ do
 done
 
 echo -e "\e[34mBuilding ${app_name}…\e[0m"
-docker buildx build --load -t "${base_image}:${version}" --build-arg GIT_TAG="$version" -f Dockerfile.build . || exit 1
+docker buildx build --push -t "${repository}:${base_build_tag}" --build-arg GIT_TAG="$version" -f Dockerfile.build . || exit 1
 
 if [ $create_builder ]; then
     echo -e "\e[34mCreating builder…\e[0m"
@@ -63,7 +64,7 @@ args=()
 
 args+=(--push)
 args+=(--platform "${platform}")
-args+=(--build-arg base_image="${base_image}:${version}")
+args+=(--build-arg base_image="${repository}:${base_build_tag}")
 args+=(-t "${repository}:${tag}")
 
 if [ -e "$builder_name" ]; then
