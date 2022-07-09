@@ -24,6 +24,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     permissions:
       contents: read
       packages: write
@@ -83,9 +88,9 @@ jobs:
           build-args: |
             GIT_TAG=${{ steps.cyberchef-release.outputs.tag }}
           tags: |
-            build
+            localhost:5000/${{ env.IMAGE_NAME }}:build
           labels: ${{ steps.meta.outputs.labels }}
-          load: true
+          push: true
           cache-to: type=gha,mode=max
           cache-from: type=gha
          
@@ -103,7 +108,7 @@ jobs:
             linux/armhf
             linux/armel
           build-args: |
-            BASE_IMAGE=build
+            BASE_IMAGE=localhost:5000/${{ env.IMAGE_NAME }}:build
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
