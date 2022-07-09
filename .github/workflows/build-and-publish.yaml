@@ -81,7 +81,7 @@ jobs:
           context: .
           file: Dockerfile.build
           build-args: |
-            GIT_TAG: ${{ step.cyberchef-release.outputs.tag }}
+            GIT_TAG: ${{ steps.cyberchef-release.outputs.tag }}
           tags: cyberchef:build
           labels: ${{ steps.meta.outputs.labels }}
           load: true
