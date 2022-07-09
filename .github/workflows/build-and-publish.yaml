@@ -88,8 +88,8 @@ jobs:
           load: true
           pull: true
           push: false
-          cache-to: type=gha,mode=min
-          cache-from: type=gha,mode=min
+          cache-to: type=gha,mode=max
+          cache-from: type=gha
          
       # Now we build multiarch packages with Dockerfile.build
       - name: Build and push Docker image
@@ -117,5 +117,5 @@ jobs:
           load: false
           pull: true
           push: true
-          cache-to: type=gha,mode=min
-          cache-from: type=gha,mode=min
+          cache-to: type=gha,mode=max
+          cache-from: type=gha
