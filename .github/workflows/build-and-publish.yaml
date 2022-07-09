@@ -117,3 +117,11 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
+
+
+      - name: Create/update tag ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+        uses: rickstaa/action-create-tag@v1
+        if: github.event_name != 'pull_request'
+        with:
+          tag: "latest"
+          message: "Latest release"
