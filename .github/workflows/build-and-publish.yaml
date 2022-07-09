@@ -114,4 +114,4 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}
           labels: ${{ steps.meta.outputs.labels }}
           # cache-to: type=gha,mode=max
-          # cache-from: type=gha
+          cache-from: type=gha
