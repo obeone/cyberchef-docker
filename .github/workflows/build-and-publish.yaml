@@ -1,4 +1,4 @@
-name: Docker
+name: Build and push
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -81,7 +81,7 @@ jobs:
           context: .
           file: Dockerfile.build
           build-args: |
-            GIT_TAG: ${{ cyberchef-release.tag }}
+            GIT_TAG: ${{ step.cyberchef-release.outputs.tag }}
           tags: cyberchef:build
           labels: ${{ steps.meta.outputs.labels }}
           load: true
