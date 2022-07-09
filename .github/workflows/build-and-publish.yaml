@@ -86,8 +86,8 @@ jobs:
             build
           labels: ${{ steps.meta.outputs.labels }}
           load: true
-          cache-to: type=gha,mode=max
-          cache-from: type=gha
+          # cache-to: type=gha,mode=max
+          # cache-from: type=gha
          
       # Now we build multiarch packages with Dockerfile.build
       - name: Build and push Docker image
@@ -113,5 +113,5 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-to: type=gha,mode=max
-          cache-from: type=gha
+          # cache-to: type=gha,mode=max
+          # cache-from: type=gha
