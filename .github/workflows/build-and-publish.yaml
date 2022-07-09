@@ -58,7 +58,7 @@ jobs:
 
       # Parse CyberChef version from tag
       - name: Parse semver string
-        id: steps.semver_parser.outputs 
+        id: semver_parser
         uses: booxmedialtd/ws-action-parse-semver@v1
         with:
           input_string: ${{ steps.cyberchef-release.outputs.tag }}
