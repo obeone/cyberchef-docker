@@ -6,7 +6,6 @@ WORKDIR /srv
 
 RUN if [ -e "${GIT_TAG}" ]; then git checkout ${GIT_TAG}; fi
 
-LABEL version="$latestTag"
 # RUN apt-get update
 #RUN apt-get install -y python3 grunt node-findup-sync
 ENV NODE_OPTIONS="--max-old-space-size=2048"
@@ -22,3 +21,4 @@ COPY --from=build /srv/build/prod /
 
 
 LABEL maintainer='Grégoire Compagnon <obeone@obeone.org>'
+LABEL version="${GIT_TAG}"
