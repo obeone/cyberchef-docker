@@ -1,5 +1,5 @@
-ARG base_image
-FROM --platform=${BUILDPLATFORM} ${base_image} as build
+ARG BASE_IMAGE
+FROM --platform=${BUILDPLATFORM} ${BASE_IMAGE} as build
 
 FROM docker.io/nginxinc/nginx-unprivileged:alpine as app
 # old http-server was running on port 8000, avoid breaking change
