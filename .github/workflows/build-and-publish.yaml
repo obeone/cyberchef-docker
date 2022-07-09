@@ -87,7 +87,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:build
           labels: ${{ steps.meta.outputs.labels }}
           load: true
-          push: false
+          push: true
           cache-to: type=gha,mode=max
           cache-from: type=gha
          
