@@ -22,7 +22,8 @@
 				"formulahendry.docker-extension-pack",
 				"pinage404.bash-extension-pack",
 				"cschleiden.vscode-github-actions",
-				"me-dutour-mathieu.vscode-github-actions"
+				"me-dutour-mathieu.vscode-github-actions",
+				"GitHub.vscode-pull-request-github"
 			]
 		}
 	},
