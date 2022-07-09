@@ -86,8 +86,8 @@ jobs:
             build
           labels: ${{ steps.meta.outputs.labels }}
           load: true
-          # cache-to: type=gha,mode=max
-          # cache-from: type=gha
+          cache-to: type=gha,mode=max
+          cache-from: type=gha
          
       # Now we build multiarch packages with Dockerfile.build
       - name: Build and push Docker image
