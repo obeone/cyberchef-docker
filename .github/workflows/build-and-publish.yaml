@@ -84,9 +84,9 @@ jobs:
             GIT_TAG=${{ steps.cyberchef-release.outputs.tag }}
           tags: |
             cyberchef:build
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:build
           labels: ${{ steps.meta.outputs.labels }}
           load: true
-          pull: true
           push: false
           cache-to: type=gha,mode=max
           cache-from: type=gha
@@ -104,7 +104,7 @@ jobs:
             linux/armhf
             linux/armel
           build-args: |
-            BASE_IMAGE=cyberchef:build
+            BASE_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:build
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
@@ -114,7 +114,5 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}
           labels: ${{ steps.meta.outputs.labels }}
-          load: false
-          push: true
           cache-to: type=gha,mode=max
           cache-from: type=gha
