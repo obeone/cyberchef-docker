@@ -114,7 +114,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:vlatest
           labels: ${{ steps.meta.outputs.labels }}
-          load: true
+          load: false
           pull: true
           push: true
           cache-to: type=gha,mode=min
