@@ -123,7 +123,7 @@ jobs:
       - name: Find last tag
         uses: oprypin/find-latest-tag@v1
         with:
-          repository: {{ env.GITHUB_REPOSITORY }}
+          repository: ${{ env.GITHUB_REPOSITORY }}
         id: latest_tag
 
       - name: Create/update tag ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
