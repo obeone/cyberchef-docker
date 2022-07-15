@@ -120,10 +120,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
 
+      - name: Find last tag
+        uses: oprypin/find-latest-tag@v1
+        with:
+          repository: {{ env.GITHUB_REPOSITORY }}
+        id: latest_tag
 
       - name: Create/update tag ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
         uses: rickstaa/action-create-tag@v1
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' and steps.latest_tag.outputs.tag != '{{ steps.semver_parser.outputs.major }}.{{ steps.semver_parser.outputs.minor }}.{{ steps.semver_parser.outputs.patch }}'
         with:
           tag: ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
           message: Version ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
