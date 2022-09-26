@@ -126,9 +126,17 @@ jobs:
           repository: ${{ github.repository }}
         id: latest_tag
 
-      - name: Create/update tag ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+      - uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with: 
+          tag: ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - if: ${{ steps.checkTag.outputs.exists == 'false' }} && github.event_name != 'pull_request'
+        name: Create/update tag ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
         uses: rickstaa/action-create-tag@v1
-        if: github.event_name != 'pull_request' && steps.latest_tag.outputs.tag != '{{ steps.semver_parser.outputs.major }}.{{ steps.semver_parser.outputs.minor }}.{{ steps.semver_parser.outputs.patch }}'
         with:
           tag: ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
           message: Version ${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
