@@ -96,7 +96,7 @@ jobs:
           push: true
           cache-to: type=gha,mode=max
           cache-from: type=gha
-         
+    
       # Now we build multiarch packages with Dockerfile.build
       - name: Build and push Docker image
         id: build-and-push
@@ -126,7 +126,14 @@ jobs:
       - name: Sign the images with GitHub OIDC Token 
         run: cosign sign ${TAGS}
         env:
-          TAGS: ${{ steps.build-and-push.outputs.tags }}
+          TAGS: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver_parser.outputs.major }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}.${{ steps.semver_parser.outputs.patch }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}.${{ steps.semver_parser.outputs.minor }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.semver_parser.outputs.major }}
           COSIGN_EXPERIMENTAL: true
 
       - name: Find last tag
