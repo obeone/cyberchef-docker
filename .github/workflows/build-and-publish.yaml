@@ -101,7 +101,7 @@ jobs:
           context: .
           file: Dockerfile.build
           build-args: |
-            GIT_TAG=${{ steps.cyberchef-release.outputs.tag }}
+            GIT_TAG=${{ steps.version.outputs.tag }}
           tags: |
             localhost:5000/${{ env.IMAGE_NAME }}:build
           labels: ${{ steps.meta.outputs.labels }}
