@@ -152,7 +152,7 @@ jobs:
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
         with:
-          tag: ${{ steps.cyberchef-release.outputs.tag }}
+          tag: ${{ steps.version.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -160,5 +160,5 @@ jobs:
         name: Create/update tag ${{ steps.version.outputs.tag }}
         uses: rickstaa/action-create-tag@v1
         with:
-          tag: ${{ steps.cyberchef-release.outputs.tag }}
-          message: Version ${{ steps.cyberchef-release.outputs.tag }}
+          tag: ${{ steps.version.outputs.tag }}
+          message: Version ${{ steps.version.outputs.tag }}
