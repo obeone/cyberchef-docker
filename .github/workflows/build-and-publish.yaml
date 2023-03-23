@@ -170,23 +170,12 @@ jobs:
         run: echo "current_date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
 
       - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        name: Create version badge
-        uses: schneegans/dynamic-badges-action@v1.6.0
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: ${{ env.GIST_ID }}
-          filename: version.json
-          label: Version
-          message: ${{ steps.version.outputs.tag }}
-          color: green
-
-      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         name: Create date badge
         uses: schneegans/dynamic-badges-action@v1.6.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ env.GIST_ID }}
           filename: date.json
-          label: Last build
+          label: build date
           message: ${{ steps.date.outputs.current_date }}
           color: green
