@@ -1,6 +1,8 @@
 # CyberChef
 The Cyber Swiss Army Knife - a web app for encryption, encoding, compression and data analysis
 
+This package is rebuilt everyday to stay up-to-date and always use latest upstream version of CyberChef (there are tags using CyberChef version)
+
 This docker image embbed [GCHQ CyberChef](https://github.com/gchq/CyberChef) in an unprivileged nginx.
 
 ## Usage
