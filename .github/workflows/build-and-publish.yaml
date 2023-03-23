@@ -16,6 +16,7 @@ env:
   IMAGES: |
     docker.io/obebete/cyberchef
     ghcr.io/obeone/cyberchef
+  GIST_ID: 511a7f976ff40fc7e07dd4dc39c2d5c5
 
 jobs:
   build:
@@ -162,3 +163,30 @@ jobs:
         with:
           tag: ${{ steps.version.outputs.tag }}
           message: Version ${{ steps.version.outputs.tag }}
+
+      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        name: Getting current date
+        id: date
+        run: echo "current_date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+
+      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        name: Create version badge
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ env.GIST_ID }}
+          filename: version.json
+          label: Version
+          message: ${{ steps.version.outputs.tag }}
+          color: green
+
+      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        name: Create date badge
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ env.GIST_ID }}
+          filename: date.json
+          label: Last build
+          message: ${{ steps.date.outputs.current_date }}
+          color: green
