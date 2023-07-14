@@ -2,7 +2,7 @@
 
 [![Build and push](https://github.com/obeone/cyberchef-docker/actions/workflows/build-and-publish.yaml/badge.svg)](https://github.com/obeone/cyberchef-docker/actions/workflows/build-and-publish.yaml)
 ![Version](https://img.shields.io/github/v/tag/obeone/cyberchef-docker?label=version&style=plastic)
-![Date](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/obeone/511a7f976ff40fc7e07dd4dc39c2d5c5/raw/date.json)
+![Date](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/obeone/876a9aed55cffad6054360c99ecf4093/raw/date.json)
 
 The Cyber Swiss Army Knife - a web app for encryption, encoding, compression and data analysis
 
