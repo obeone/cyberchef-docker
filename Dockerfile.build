@@ -1,4 +1,4 @@
-FROM docker.io/node as build
+FROM docker.io/node:18 as build
 ARG GIT_TAG=
 
 RUN git clone https://github.com/gchq/CyberChef /srv
