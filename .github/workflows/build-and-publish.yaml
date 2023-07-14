@@ -16,7 +16,7 @@ env:
   IMAGES: |
     docker.io/obebete/cyberchef
     ghcr.io/obeone/cyberchef
-  GIST_ID: 511a7f976ff40fc7e07dd4dc39c2d5c5
+  GIST_ID: 876a9aed55cffad6054360c99ecf4093
 
 jobs:
   build:
