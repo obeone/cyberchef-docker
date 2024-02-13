@@ -65,7 +65,7 @@ jobs:
 
       # Find latest tag of repository gchoi/cyberchef
       - name: Fetch latest release
-        uses: thebritican/fetch-latest-release@v1
+        uses: gregziegan/fetch-latest-release@v2.0.0
         with:
           github_token: ${{ github.token }}
           repo_path: gchq/CyberChef
@@ -73,7 +73,7 @@ jobs:
 
       - name: Parse semver string
         id: semver_parser
-        uses: gregziegan/fetch-latest-release@v2.0.0
+        uses: booxmedialtd/ws-action-parse-semver@v1
         with:
           input_string: "${{ steps.version.outputs.tag_name }}"
 
