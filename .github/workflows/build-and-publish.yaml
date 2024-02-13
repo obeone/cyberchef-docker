@@ -64,17 +64,18 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Find latest tag of repository gchoi/cyberchef
-      - uses: oprypin/find-latest-tag@v1
+      - name: Fetch latest release
+        uses: thebritican/fetch-latest-release@v1
         with:
-          repository: gchq/cyberchef
-          releases-only: false
+          github_token: ${{ github.token }}
+          repo_path: gchq/CyberChef
         id: version
 
       - name: Parse semver string
         id: semver_parser
-        uses: booxmedialtd/ws-action-parse-semver@v1
+        uses: gregziegan/fetch-latest-release@v2.0.0
         with:
-          input_string: "${{ steps.version.outputs.tag }}"
+          input_string: "${{ steps.version.outputs.tag_name }}"
 
       - name: Docker metadata
         id: meta
@@ -102,7 +103,7 @@ jobs:
           context: .
           file: Dockerfile.build
           build-args: |
-            GIT_TAG=${{ steps.version.outputs.tag }}
+            GIT_TAG=${{ steps.version.outputs.tag_name }}
           tags: |
             localhost:5000/${{ env.IMAGE_NAME }}:build
           labels: ${{ steps.meta.outputs.labels }}
@@ -153,16 +154,16 @@ jobs:
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
         with:
-          tag: ${{ steps.version.outputs.tag }}
+          tag: ${{ steps.version.outputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - if: steps.checkTag.outputs.exists == 'false' && github.event_name != 'pull_request'
-        name: Create/update tag ${{ steps.version.outputs.tag }}
+        name: Create/update tag ${{ steps.version.outputs.tag_name }}
         uses: rickstaa/action-create-tag@v1
         with:
-          tag: ${{ steps.version.outputs.tag }}
-          message: Version ${{ steps.version.outputs.tag }}
+          tag: ${{ steps.version.outputs.tag_name }}
+          message: Version ${{ steps.version.outputs.tag_name }}
 
       - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         name: Getting current date
