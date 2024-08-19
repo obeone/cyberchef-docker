@@ -64,12 +64,21 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Find latest tag of repository gchoi/cyberchef
-      - name: Fetch latest release
+      - name: Fetch latest release (if not run by a tag push)
         uses: gregziegan/fetch-latest-release@v2.0.0
         with:
           github_token: ${{ github.token }}
           repo_path: gchq/CyberChef
         id: version
+        # If not from a tag push
+        if: github.event_name != 'push' || (github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/'))
+        
+      - name: Use tag name as version if run on a tag push
+        run: |
+          TAG_NAME=$(basename ${GITHUB_REF##*/})
+          echo ::set-output name=tag_name::${TAG_NAME}
+        if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/')
+
 
       - name: Parse semver string
         id: semver_parser
@@ -172,7 +181,7 @@ jobs:
 
       - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         name: Create date badge
-        uses: schneegans/dynamic-badges-action@v1.6.0
+        uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ env.GIST_ID }}
