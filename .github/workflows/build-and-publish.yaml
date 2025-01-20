@@ -18,6 +18,7 @@ env:
   IMAGE_NAME: cyberchef
   IMAGES: |
     docker.io/obebete/cyberchef
+    docker.io/obeoneorg/cyberchef
     ghcr.io/obeone/cyberchef
   GIST_ID: 876a9aed55cffad6054360c99ecf4093
 
