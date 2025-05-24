@@ -1,10 +1,7 @@
 # syntax=docker/dockerfile:1
 
-# Define the base image argument, default is 'build'
-ARG BASE_IMAGE=build
-
 # Stage 1: Builder stage using Node.js 18 image
-FROM docker.io/node:18 AS builder
+FROM --platform=$BUILDPLATFORM docker.io/node:18 AS builder
 ARG GIT_TAG=
 
 # Clone the CyberChef repository into /srv directory
@@ -20,17 +17,8 @@ ENV NODE_OPTIONS="--max-old-space-size=2048"
 # Install npm dependencies
 RUN npm install
 
-# Run the production build using grunt
-RUN npx grunt prod
-
-# Stage 2: Build stage from scratch (empty image)
-FROM scratch AS build
-
-# Copy the production build output from builder stage
-COPY --from=builder /srv/build/prod /
-
-# Stage 3: Builded stage (placeholder, no content)
-FROM $BASE_IMAGE AS builded
+# Run the production build
+RUN npm run build
 
 # Stage 4: Final application stage using unprivileged nginx on Alpine
 FROM docker.io/nginxinc/nginx-unprivileged:alpine AS app
@@ -39,7 +27,7 @@ FROM docker.io/nginxinc/nginx-unprivileged:alpine AS app
 RUN sed -i 's|listen       8080;|listen       8000;|g' /etc/nginx/conf.d/default.conf
 
 # Copy the built application files from the build stage to nginx html directory
-COPY --from=builded / /usr/share/nginx/html
+COPY --from=builder /srv/build/prod /usr/share/nginx/html
 
 # Expose port 8000 for the application
 EXPOSE 8000
