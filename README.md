@@ -24,7 +24,21 @@ Then, open your web browser and navigate to [http://localhost:8000](http://local
 
 ### Building from Source
 
-If you need to customize the build, edit `build.sh` script as needed and execute it to build your container.
+If you need to build the image from source, you can use the `docker build` command.
+
+To build the latest version from the `main` branch:
+
+```bash
+docker build -t your-image-name .
+```
+
+To build a specific version using a Git tag (e.g., `9.4.0`):
+
+```bash
+docker build --build-arg GIT_TAG=9.4.0 -t your-image-name .
+```
+
+Replace `your-image-name` with the desired name for your Docker image.
 
 ### Kubernetes Deployment
 
