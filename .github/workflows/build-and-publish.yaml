@@ -113,7 +113,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile.build
+          target: build
           build-args: |
             GIT_TAG=${{ steps.version.outputs.tag_name }}
           tags: |
