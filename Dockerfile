@@ -1,8 +1,11 @@
 # syntax=docker/dockerfile:1
 
-# Stage 1: Builder stage using Node.js 18 image
-FROM --platform=$BUILDPLATFORM docker.io/node:18 AS builder
+# Stage 1: Builder stage using Node.js 24 Alpine image (CyberChef v11 requires Node >=24 <25)
+FROM --platform=$BUILDPLATFORM docker.io/node:24-alpine AS builder
 ARG GIT_TAG=
+
+# git is required to clone the upstream CyberChef repository
+RUN apk add --no-cache git
 
 # Clone the CyberChef repository into /srv directory
 RUN git clone https://github.com/gchq/CyberChef /srv
@@ -11,8 +14,8 @@ WORKDIR /srv
 # Checkout the specified git tag if provided
 RUN if [ -n "${GIT_TAG}" ]; then git checkout ${GIT_TAG}; fi
 
-# Increase Node.js memory limit to 2GB for build process
-ENV NODE_OPTIONS="--max-old-space-size=2048"
+# Increase Node.js memory limit to 4GB for build process
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Install npm dependencies
 RUN npm install
@@ -20,7 +23,7 @@ RUN npm install
 # Run the production build
 RUN npm run build
 
-# Stage 4: Final application stage using unprivileged nginx on Alpine
+# Stage 2: Final application stage using unprivileged nginx on Alpine
 FROM docker.io/nginxinc/nginx-unprivileged:alpine AS app
 
 # Change nginx listen port from 8080 to 8000 to maintain compatibility with old http-server
