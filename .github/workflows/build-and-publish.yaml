@@ -33,14 +33,13 @@ jobs:
 
     steps:
       - name: Install Cosign
-        uses: sigstore/cosign-installer@main
+        uses: sigstore/cosign-installer@v4.1.2
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           driver-opts: network=host
 
@@ -48,14 +47,14 @@ jobs:
       # https://github.com/docker/login-action
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -72,9 +71,10 @@ jobs:
         if: github.event_name != 'push' || (github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/'))
         
       - name: Use tag name as version if run on a tag push
+        id: version_tag
         run: |
           TAG_NAME=$(basename ${GITHUB_REF##*/})
-          echo ::set-output name=tag_name::${TAG_NAME}
+          echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
         if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/')
 
 
@@ -86,7 +86,7 @@ jobs:
 
       - name: Docker metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: ${{ env.IMAGES }}
@@ -104,16 +104,13 @@ jobs:
       # Now we build multiarch packages with Dockerfile.build
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           platforms: |
             linux/amd64
             linux/arm64
-            linux/i386
-            linux/armhf
-            linux/armel
           build-args: |
             GIT_TAG=${{ steps.version.outputs.tag_name }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -142,7 +139,7 @@ jobs:
         id: latest_tag
 
       - name: Check if tag already exists
-        uses: mukunku/tag-exists-action@v1.0.0
+        uses: mukunku/tag-exists-action@v1.7.0
         id: checkTag
         with:
           tag: ${{ steps.version.outputs.tag_name }}
@@ -174,7 +171,7 @@ jobs:
 
       - if: ${{ github.event_name != 'pull_request' }}
         name: Update Docker Hub description
-        uses: peter-evans/dockerhub-description@v4
+        uses: peter-evans/dockerhub-description@v5
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME  }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
