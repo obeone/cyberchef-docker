@@ -2,7 +2,7 @@
 
 [![Build and Push Workflow](https://github.com/obeone/cyberchef-docker/actions/workflows/build-and-publish.yaml/badge.svg)](https://github.com/obeone/cyberchef-docker/actions/workflows/build-and-publish.yaml)
 ![Version](https://img.shields.io/github/v/tag/obeone/cyberchef-docker?label=version&style=plastic)
-![Last Updated](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/obeone/876a9aed55cffad6054360c99ecf4093/raw/date.json)
+![Last Updated](https://img.shields.io/docker/last-updated/obeoneorg/cyberchef/latest)
 
 ## Overview
 
